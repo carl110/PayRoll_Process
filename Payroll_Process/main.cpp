@@ -34,40 +34,50 @@ struct PaySlip {
 
 
 
-void CalculatePAYE(vector<Employee>&ArrayOfEmployees);
-void DisplayPaySlipSummary(vector<Employee>& ArrayOfEmployees, vector<PaySlip>& PaySlipVector);
-void MainMenu(vector<Employee>& ArrayOfEmployees);
-void EmployeeMaintenance(vector<Employee>& ArrayOfEmployees);
-void ShowAllEmployees(vector<Employee>& ArrayOfEmployees);
-void ShowIndividualEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo);
-void AmendEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo);
-void ShowAmendMenu(vector<Employee>& ArrayOfEmployees, int employeeNo);
-void AddNewEmployee(vector<Employee>& ArrayOfEmployees);
-bool CheckPPSExists(vector<Employee>& ArrayOfEmployees, string ppsNo);
-void RemoveEmployee(vector<Employee>& ArrayOfEmployees);
+void CalculatePAYE();
+void DisplayPaySlipSummary();
+void MainMenu();
+void EmployeeMaintenance();
+void ShowAllEmployees();
+void ShowIndividualEmployee(int employeeNo);
+void AmendEmployee(int employeeNo);
+void ShowAmendMenu(int employeeNo);
+void AddNewEmployee();
+bool CheckPPSExists(string ppsNo);
+void RemoveEmployee();
 bool CheckPPSNumber(string ppsNo);
 
-
+vector<Employee> EmployeeVector;
+void HardcodeEmployees();
+vector<PaySlip> EmployeePaySlips;
+void HardcodePayslips();
 
 int main(int argc, const char * argv[]) {
     
     
-    vector<Employee> EmployeeVec = {{"Employer" , "3569253TA", "Name", "Programmer", "IT", 52000},
-        {"Employer", "52314568PA", "Ian", "Cyber Security", "GIS", 104000}};
+    HardcodeEmployees();
+    HardcodePayslips();
     
-    vector<PaySlip> EmployeePaySlips{{"3569253TA", 1000, 50, 250, 50, "1", 1000},
-        {"3569253TA", 1000, 50, 250, 50, "2", 2000},
-        {"3569253TA", 1000, 50, 250, 50, "3", 3000},
-        {"52314568PA", 2000, 100, 500, 100, "1", 2000},
-        {"52314568PA", 2000, 100, 500, 100, "2", 4000},
-        {"52314568PA", 2000, 100, 500, 100, "3", 6000}
-    };
-    
-    MainMenu(EmployeeVec);
+    MainMenu();
 }
 
-void CalculatePAYE(vector<Employee>&ArrayOfEmployees){
-    for(int i = 0; i < sizeof(ArrayOfEmployees); i++){
+void HardcodeEmployees(){
+    EmployeeVector.push_back({"Employer", "3569253TA", "Name", "Programmer", "IT", 52000});
+    EmployeeVector.push_back({"Employer", "52314568PA", "Ian", "Cyber Security", "GIS", 104000});
+}
+
+void HardcodePayslips(){
+    
+    EmployeePaySlips.push_back({"3569253TA", 1000, 50, 250, 50, "1", 1000});
+    EmployeePaySlips.push_back({"3569253TA", 1000, 50, 250, 50, "2", 2000});
+    EmployeePaySlips.push_back({"3569253TA", 1000, 50, 250, 50, "3", 3000});
+    EmployeePaySlips.push_back({"52314568PA", 2000, 100, 500, 100, "1", 2000});
+    EmployeePaySlips.push_back({"52314568PA", 2000, 100, 500, 100, "2", 4000});
+    EmployeePaySlips.push_back({"52314568PA", 2000, 100, 500, 100, "3", 6000});
+}
+
+void CalculatePAYE(){
+    for(int i = 0; i < sizeof(EmployeeVector); i++){
         //        ArrayOfEmployees[i].paye = ArrayOfEmployees[i].weeklyPay * 0.27;
     }
 }
@@ -100,7 +110,7 @@ void DisplayPaySlipSummary(vector<Employee>& ArrayOfEmployees, vector<PaySlip>& 
 }
 
 
-void MainMenu(vector<Employee>& ArrayOfEmployees){
+void MainMenu(){
     int selection;
     cout << "*************PAYROLL SYSTEM*************" << "\n\n";
     cout << "1  -  Employee Maintenance \n";
@@ -113,16 +123,19 @@ void MainMenu(vector<Employee>& ArrayOfEmployees){
         cout << "INVALID INPUT.";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        MainMenu(ArrayOfEmployees);
+        MainMenu();
     }
     
     switch (selection) {
         case 1:
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
-            EmployeeMaintenance(ArrayOfEmployees);
+            EmployeeMaintenance();
             break;
         case 2:
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
+            break;
+        case 3:
+            exit(0);
             break;
         default:
             break;
@@ -130,7 +143,7 @@ void MainMenu(vector<Employee>& ArrayOfEmployees){
 };
 
 
-void EmployeeMaintenance(vector<Employee>& ArrayOfEmployees) {
+void EmployeeMaintenance() {
     int menuChoice = 0;
     cout << "*************Employee Maintenance*************" << "\n\n";
     cout << "1  -  Add Employee \n";
@@ -145,44 +158,45 @@ void EmployeeMaintenance(vector<Employee>& ArrayOfEmployees) {
         cout << "INVALID INPUT.";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        EmployeeMaintenance(ArrayOfEmployees);
+        EmployeeMaintenance();
     }
     
     switch (menuChoice){
         case 1: //add
-            AddNewEmployee(ArrayOfEmployees);
-            EmployeeMaintenance(ArrayOfEmployees);
+            AddNewEmployee();
+            EmployeeMaintenance();
             break;
         case 2: //remove
-            RemoveEmployee(ArrayOfEmployees);
-            EmployeeMaintenance(ArrayOfEmployees);
+            RemoveEmployee();
+            EmployeeMaintenance();
             break;
         case 3: //view all
-            ShowAllEmployees(ArrayOfEmployees);
-            EmployeeMaintenance(ArrayOfEmployees);
+            ShowAllEmployees();
+            EmployeeMaintenance();
             break;
         case 4: //amend
         {
-            ShowAllEmployees(ArrayOfEmployees);
+            ShowAllEmployees();
             int employeeNo;
             cout << "Which record do you wish to amend? Enter Employee No...\n";
             cin >> employeeNo;
-            ShowAmendMenu(ArrayOfEmployees, employeeNo);
-            EmployeeMaintenance(ArrayOfEmployees);
+            ShowAmendMenu(employeeNo);
+            EmployeeMaintenance();
         }
             break;
         case 5: //Return to Menu
-            MainMenu(ArrayOfEmployees);
+            MainMenu();
             break;
         case 6:
+            exit(0);
             break;
         default:
-            EmployeeMaintenance(ArrayOfEmployees);
+            EmployeeMaintenance();
             break;
     }
 };
 
-void RemoveEmployee(vector<Employee>& ArrayOfEmployees){
+void RemoveEmployee(){
     
     string ppsNo;
     
@@ -190,12 +204,12 @@ void RemoveEmployee(vector<Employee>& ArrayOfEmployees){
     
     cin >> ppsNo;
     
-    if (CheckPPSExists(ArrayOfEmployees, ppsNo)){
-        for (int i = 0; i < ArrayOfEmployees.size(); i++ ){
-            if (ArrayOfEmployees[i].ppsNo == ppsNo){
-                string name = ArrayOfEmployees[i].name;
-                ArrayOfEmployees.erase(ArrayOfEmployees.begin()+(i));
-                i = sizeof(ArrayOfEmployees);
+    if (CheckPPSExists(ppsNo)){
+        for (int i = 0; i < EmployeeVector.size(); i++ ){
+            if (EmployeeVector[i].ppsNo == ppsNo){
+                string name = EmployeeVector[i].name;
+                EmployeeVector.erase(EmployeeVector.begin()+(i));
+                i = sizeof(EmployeeVector);
                 cout << "Employee" << name << " with PPS '" << ppsNo << "' has been removed from the system \n";
             }
         }
@@ -204,22 +218,22 @@ void RemoveEmployee(vector<Employee>& ArrayOfEmployees){
     }
 }
 
-bool CheckPPSExists(vector<Employee>& ArrayOfEmployees, string ppsNo){
+bool CheckPPSExists(string ppsNo){
     
     
     
     bool exists = false;
     
-    for (int i = 0; i < ArrayOfEmployees.size(); i++ ){
-        if (ArrayOfEmployees[i].ppsNo == ppsNo){
+    for (int i = 0; i < EmployeeVector.size(); i++ ){
+        if (EmployeeVector[i].ppsNo == ppsNo){
             exists = true;
-            i = sizeof(ArrayOfEmployees);
+            i = sizeof(EmployeeVector);
         }
     }
     return exists;
 }
 
-void AddNewEmployee(vector<Employee>& ArrayOfEmployees){
+void AddNewEmployee(){
     string employer;
     string ppsNo;
     string name;
@@ -234,11 +248,11 @@ void AddNewEmployee(vector<Employee>& ArrayOfEmployees){
     
     if (CheckPPSNumber(ppsNo)){
         
-        if (CheckPPSExists(ArrayOfEmployees, ppsNo)){
+        if (CheckPPSExists(ppsNo)){
             cout << "This Employee already exists...\n\n";
-            for (int i = 0; i < ArrayOfEmployees.size(); i++){
-                if (ArrayOfEmployees[i].ppsNo == ppsNo){
-                    ShowIndividualEmployee(ArrayOfEmployees, i);
+            for (int i = 0; i < EmployeeVector.size(); i++){
+                if (EmployeeVector[i].ppsNo == ppsNo){
+                    ShowIndividualEmployee(i);
                 }
             }
             
@@ -254,43 +268,43 @@ void AddNewEmployee(vector<Employee>& ArrayOfEmployees){
             getline(cin, department);
             cout << "Enter Salary (Numbers only)...";
             cin >> salary;
-            ArrayOfEmployees.push_back({employer, ppsNo, name, jobTitle, department, salary});
+            EmployeeVector.push_back({employer, ppsNo, name, jobTitle, department, salary});
             cout << "Employee Added\n";
         }
     } else {
         cout << "This PPS Number is not valid, please try again...";
-        EmployeeMaintenance(ArrayOfEmployees);
+        EmployeeMaintenance();
     }
 }
 
-void ShowAllEmployees(vector<Employee>& ArrayOfEmployees){
+void ShowAllEmployees(){
     cout << "*************All Employees*************\n\n";
-    for (int i = 0; i < ArrayOfEmployees.size(); i++){
-        cout << "Employer \t\t" << ArrayOfEmployees[i].employer << "\n";
+    for (int i = 0; i < EmployeeVector.size(); i++){
+        cout << "Employer \t\t" << EmployeeVector[i].employer << "\n";
         cout << "Employee No \t" << i+1 << "\n";
-        cout << "Name \t\t\t" << ArrayOfEmployees[i].name << "\n";
-        cout << "Department \t\t" << ArrayOfEmployees[i].department << "\n";
-        cout << "Job Title \t\t" << ArrayOfEmployees[i].jobTitle << "\n";
-        cout << "PPS Number \t\t" << ArrayOfEmployees[i].ppsNo << "\n";
+        cout << "Name \t\t\t" << EmployeeVector[i].name << "\n";
+        cout << "Department \t\t" << EmployeeVector[i].department << "\n";
+        cout << "Job Title \t\t" << EmployeeVector[i].jobTitle << "\n";
+        cout << "PPS Number \t\t" << EmployeeVector[i].ppsNo << "\n";
         cout << "******************************************************\n";
     }
     cout << "\n\n";
     
 }
 
-void ShowIndividualEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo){
+void ShowIndividualEmployee(int employeeNo){
     cout << "******************************************************\n";
-    cout << "Employer \t\t" << ArrayOfEmployees[employeeNo].employer << "\n";
+    cout << "Employer \t\t" << EmployeeVector[employeeNo].employer << "\n";
     cout << "Employee No \t" << employeeNo + 1 << "\n";
-    cout << "Name \t\t\t" << ArrayOfEmployees[employeeNo].name << "\n";
-    cout << "Department \t\t" << ArrayOfEmployees[employeeNo].department << "\n";
-    cout << "Job Title \t\t" << ArrayOfEmployees[employeeNo].jobTitle << "\n";
-    cout << "PPS Number \t\t" << ArrayOfEmployees[employeeNo].ppsNo << "\n";
+    cout << "Name \t\t\t" << EmployeeVector[employeeNo].name << "\n";
+    cout << "Department \t\t" << EmployeeVector[employeeNo].department << "\n";
+    cout << "Job Title \t\t" << EmployeeVector[employeeNo].jobTitle << "\n";
+    cout << "PPS Number \t\t" << EmployeeVector[employeeNo].ppsNo << "\n";
     cout << "******************************************************\n";
 }
 
-void ShowAmendMenu(vector<Employee>& ArrayOfEmployees, int employeeNo){
-    ShowIndividualEmployee(ArrayOfEmployees, employeeNo - 1);
+void ShowAmendMenu(int employeeNo){
+    ShowIndividualEmployee(employeeNo - 1);
     
     
     cout << "Please select which detail you wish to change :\n";
@@ -302,13 +316,13 @@ void ShowAmendMenu(vector<Employee>& ArrayOfEmployees, int employeeNo){
     cout << "6  -  Employees Salary \n";
     cout << "7  -  Exit \n";
     
-    AmendEmployee(ArrayOfEmployees, employeeNo);
+    AmendEmployee(employeeNo);
 }
 
-void AmendEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo){
+void AmendEmployee(int employeeNo){
     
     string employeeData;
-    int userSelection;
+    int userSelection = 0;
     int salary = 0;
     
     
@@ -318,7 +332,7 @@ void AmendEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo){
         cout << "INVALID INPUT.";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        AmendEmployee(ArrayOfEmployees, employeeNo);
+        AmendEmployee(employeeNo);
     }
     
     switch (userSelection) {
@@ -326,49 +340,49 @@ void AmendEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo){
             cout << "Input the new Employer Name...\n";
             cin.ignore();
             getline(cin, employeeData);
-            ArrayOfEmployees[employeeNo - 1].employer = employeeData;
+            EmployeeVector[employeeNo - 1].employer = employeeData;
             break;
         case 2:
             cout << "Input the new Employee Name...\n";
             cin.ignore();
             getline(cin, employeeData);
-            ArrayOfEmployees[employeeNo - 1].name = employeeData;
+            EmployeeVector[employeeNo - 1].name = employeeData;
             break;
         case 3:
             cout << "Input the new PPS Number...\n";
             cin >> employeeData;
-            if (CheckPPSNumber(ArrayOfEmployees[employeeNo - 1].ppsNo)){
-                if (CheckPPSExists(ArrayOfEmployees, employeeData)){
-                    ArrayOfEmployees[employeeNo - 1].ppsNo = employeeData;
+            if (CheckPPSNumber(EmployeeVector[employeeNo - 1].ppsNo)){
+                if (CheckPPSExists(employeeData)){
+                    EmployeeVector[employeeNo - 1].ppsNo = employeeData;
                 } else {
                     cout << "You cannot use a PPS number alread on the system";
                 }} else {
                     cout << "The PPS Number you have entered is not valid, please try again...";
-                    AmendEmployee(ArrayOfEmployees, employeeNo);
+                    AmendEmployee(employeeNo);
                 }
             break;
         case 4:
             cout << "Input the new Job Title...\n";
             cin.ignore();
             getline(cin, employeeData);
-            ArrayOfEmployees[employeeNo - 1].jobTitle = employeeData;
+            EmployeeVector[employeeNo - 1].jobTitle = employeeData;
             break;
         case 5:
             cout << "Input the new Department Name...\n";
             cin.ignore();
             getline(cin, employeeData);
-            ArrayOfEmployees[employeeNo - 1].department = employeeData;
+            EmployeeVector[employeeNo - 1].department = employeeData;
             break;
         case 6:
         {
             cout << "Input the new Salary...\n";
             cin >> salary;
-            ArrayOfEmployees[employeeNo - 1].salary = salary;
+            EmployeeVector[employeeNo - 1].salary = salary;
         }
             break;
         case 7:
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
-            EmployeeMaintenance(ArrayOfEmployees);
+            EmployeeMaintenance();
             break;
         default:
             break;
@@ -376,7 +390,7 @@ void AmendEmployee(vector<Employee>& ArrayOfEmployees, int employeeNo){
     cout << "\n\n\n\n\n\n\n\n\n\n\n";
     
     
-    ShowAmendMenu(ArrayOfEmployees, employeeNo);
+    ShowAmendMenu(employeeNo);
     
 }
 
@@ -395,7 +409,7 @@ bool CheckPPSNumber(string ppsNo){
 
 
 
-void EmployeePayRoll(vector<Employee>& ArrayOfEmployees, vector<PaySlip>& PaySlipVector){
+void EmployeePayRoll(){
     int menuChoice = 0;
     cout << "*************Pay Roll Summary*************" << "\n\n";
     cout << "1  -  Compute Payroll for Employee \n";
@@ -423,9 +437,10 @@ void EmployeePayRoll(vector<Employee>& ArrayOfEmployees, vector<PaySlip>& PaySli
 //            DisplayPaySlipSummary(ArrayOfEmployees, PaySlipVector)
             break;
         case 4: //Return to Menu
-            MainMenu(ArrayOfEmployees);
+            MainMenu();
             break;
         case 5:
+            exit(0);
             break;
         default:
             break;
