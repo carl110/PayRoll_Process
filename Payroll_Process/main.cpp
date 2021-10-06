@@ -27,7 +27,7 @@ struct PaySlip {
     double paye; //25
     
     double usc; //5
-    string payPeriod;
+    int payPeriod;
     double cumulatvePay;
 };
 
@@ -47,6 +47,7 @@ bool CheckPPSExists(string ppsNo);
 void RemoveEmployee();
 bool CheckPPSNumber(string ppsNo);
 void EmployeePayRoll();
+void ComputePayRoll();
 void DisplayPayrollHistoryForIndividual();
 void DisplayPayrollHistoryForAll();
 
@@ -70,15 +71,16 @@ void HardcodeEmployees(){
 }
 
 void HardcodePayslips(){
-    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, "1", 1076.92});
-    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, "2", 2153.84});
-    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, "3", 3230.76});
-    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, "1", 1384.62});
-    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, "2", 2769.24});
-    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, "3", 4153.86});
+    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, 1, 1076.92});
+    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, 2, 2153.84});
+    EmployeePaySlips.push_back({"3214567TA", 1076.92, 53.85, 269.23, 53.85, 3, 3230.76});
+    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, 1, 1384.62});
+    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, 2, 2769.24});
+    EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, 3, 4153.86});
 }
 
 void CalculatePAYE(){
+    
     for(int i = 0; i < sizeof(EmployeeVector); i++){
         //        ArrayOfEmployees[i].paye = ArrayOfEmployees[i].weeklyPay * 0.27;
     }
@@ -373,7 +375,8 @@ void EmployeePayRoll(){
     
     switch (menuChoice){
         case 1: //Compute Payroll for Employee
-            
+            ComputePayRoll();
+            EmployeePayRoll();
             break;
         case 2: //Display Payroll History for Employee
             DisplayPayrollHistoryForIndividual();
@@ -400,8 +403,59 @@ void EmployeePayRoll(){
 }
 
 void ComputePayRoll(){
+    string ppsNo;
+    double weeklyRate = 0;
+    int payPeriod = 1;
+    double prsi = 0;
+    double paye = 0;
+    double usc = 0;
     
+    cout << "Enter Employees PPS Number...\n";
+    cin >> ppsNo;
+    //Check if PPS Exists
+    if (CheckPPSExists(ppsNo)){
+        for (int i = 0; i < EmployeeVector.size(); i++ ){
+            if (EmployeeVector[i].ppsNo == ppsNo){
+                //Show name and PPS of individual
+
+                    if (EmployeeVector[i].ppsNo == ppsNo){
+                        cout << "\n\n******************************************************\n";
+                        cout << EmployeeVector[i].name << "\t";
+                        cout << "PPS Number " << EmployeeVector[i].ppsNo << "\t\n\n";
+                        weeklyRate = static_cast<int>((EmployeeVector[i].salary / 52) * 10 + 0.5) / 10.0;
+                    }
+                    
+                    for (int n = 0; n < EmployeePaySlips.size(); n++)
+                    {
+                        if (EmployeePaySlips[n].ppsNo == ppsNo)
+                        {
+                            payPeriod++;
+                        }
+                    }
+                    //Loop through and show all payslips associated
+                
+                prsi = static_cast<int>((weeklyRate * 0.05) * 10 + 0.5) / 10.0;
+                paye = static_cast<int>((weeklyRate * 0.25) * 10 + 0.5) / 10.0;
+                usc = static_cast<int>((weeklyRate * 0.05) * 10 + 0.5) / 10.0;
+                
+                EmployeePaySlips.push_back({ppsNo, weeklyRate, prsi, paye, usc, payPeriod, weeklyRate * payPeriod});
+
+                            cout << "Pay Period = " << payPeriod << "\n";
+                            cout << "GrossPay = " << weeklyRate << "\n";
+                            cout << "PRSI = " << prsi << "\n"; //5
+                            cout << "PAYE = " << paye << "\n"; //25
+                            cout << "USC = " << usc << "\n"; //5
+                            cout << "Cumulative Pay = " << weeklyRate * payPeriod << "\n";
+                            cout << "******************************************************\n";
+                i = sizeof(EmployeeVector);
+            }
+            
+        }
+    } else {
+        cout << "This PPS number does not exists, please check and try again \n";
+    }
 }
+
 
 void DisplayPayrollHistoryForIndividual(){
     string ppsNo;
