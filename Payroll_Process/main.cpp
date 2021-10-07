@@ -31,11 +31,6 @@ struct PaySlip {
     double cumulatvePay;
 };
 
-
-
-
-void CalculatePAYE();
-void DisplayPaySlipSummary();
 void MainMenu();
 void EmployeeMaintenance();
 void ShowAllEmployees();
@@ -58,7 +53,6 @@ void HardcodePayslips();
 
 int main(int argc, const char * argv[]) {
     
-    
     HardcodeEmployees();
     HardcodePayslips();
     
@@ -66,8 +60,8 @@ int main(int argc, const char * argv[]) {
 }
 
 void HardcodeEmployees(){
-    EmployeeVector.push_back({"Tec Inc", "3214567TA", "John Murphey", "Programmer", "IT", 56000});
-    EmployeeVector.push_back({"Tec Ins", "5413726W", "Jaime King", "Cyber Security", "GIS", 72000});
+    EmployeeVector.push_back({"TEC INC", "3214567TA", "John Murphey", "Programmer", "IT", 56000});
+    EmployeeVector.push_back({"TEC INC", "5413726W", "Jaime King", "Cyber Security", "GIS", 72000});
 }
 
 void HardcodePayslips(){
@@ -79,11 +73,9 @@ void HardcodePayslips(){
     EmployeePaySlips.push_back({"5413726W", 1384.62, 69.23, 346.15, 69.23, 3, 4153.86});
 }
 
-void CalculatePAYE(){
-    
-    for(int i = 0; i < sizeof(EmployeeVector); i++){
-        //        ArrayOfEmployees[i].paye = ArrayOfEmployees[i].weeklyPay * 0.27;
-    }
+string ChangeToUpperCase(string userInput){ //Change the input string to all uppercase
+    std::transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper);
+    return userInput;
 }
 
 void MainMenu(){
@@ -116,7 +108,6 @@ void MainMenu(){
             break;
     }
 };
-
 
 void EmployeeMaintenance() {
     int menuChoice = 0;
@@ -172,6 +163,7 @@ void RemoveEmployee(){
     string ppsNo;
     cout << "Enter Employees PPS Number\n";
     cin >> ppsNo;
+    ChangeToUpperCase(ppsNo);
     //First check if PPS is exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
@@ -211,6 +203,7 @@ void AddNewEmployee(){
     cout << "\n\n\n\n\n\n";
     cout << "Enter PPS Number...\n";
     cin >> ppsNo;
+    ChangeToUpperCase(ppsNo);
     //Check if PPS number is a valid PPS
     if (CheckPPSNumber(ppsNo)){
         if (CheckPPSExists(ppsNo)){
@@ -295,25 +288,30 @@ void AmendEmployee(int employeeNo){
             cin.ignore();
             getline(cin, employeeData);
             EmployeeVector[employeeNo - 1].employer = employeeData;
+            cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 2:
             cout << "Input the new Employee Name...\n";
             cin.ignore();
             getline(cin, employeeData);
             EmployeeVector[employeeNo - 1].name = employeeData;
+            cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 3:
             cout << "Input the new PPS Number...\n";
-            cin >> employeeData;
+            cin.ignore();
+            getline(cin, employeeData);
+            ChangeToUpperCase(employeeData);
             //Check PPS does not Exist in current vector and it is a valid PPS number format
-            if (CheckPPSNumber(EmployeeVector[employeeNo - 1].ppsNo)){
-                if (CheckPPSExists(employeeData)){
+            if (CheckPPSNumber(employeeData)){
+                if (!CheckPPSExists(employeeData)){
                     EmployeeVector[employeeNo - 1].ppsNo = employeeData;
                 } else {
-                    cout << "You cannot use a PPS number alread on the system\n";
+                    cout << "\n\n\n\nThis PPS number is currently used by another employee on the system\n";
                 }} else {
-                    cout << "The PPS Number you have entered is not valid, please try again...\n";
-                    AmendEmployee(employeeNo);
+                    cout << "\n\n\n\nThe PPS Number you have entered is not valid, please try again...\n";
+                    ShowAmendMenu(employeeNo);
+                    cout << "\n\n\n\n\n\n\n\n\n\n\n";
                 }
             break;
         case 4:
@@ -321,17 +319,20 @@ void AmendEmployee(int employeeNo){
             cin.ignore();
             getline(cin, employeeData);
             EmployeeVector[employeeNo - 1].jobTitle = employeeData;
+            cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 5:
             cout << "Input the new Department Name...\n";
             cin.ignore();
             getline(cin, employeeData);
             EmployeeVector[employeeNo - 1].department = employeeData;
+            cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 6:
             cout << "Input the new Salary...\n";
             cin >> salary;
             EmployeeVector[employeeNo - 1].salary = salary;
+            cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 7: //Go back to emploee Maintenance
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
@@ -342,11 +343,9 @@ void AmendEmployee(int employeeNo){
             cout << "*************INVALID INPUT.*************\n" << "\tPlease enter a valid selection\n\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            AmendEmployee(employeeNo);
+            ShowAmendMenu(employeeNo);
             break;
     }
-    cout << "\n\n\n\n\n\n\n\n\n\n\n";
-
     ShowAmendMenu(employeeNo);
 }
 
@@ -412,6 +411,7 @@ void ComputePayRoll(){
     
     cout << "Enter Employees PPS Number...\n";
     cin >> ppsNo;
+    ChangeToUpperCase(ppsNo);
     //Check if PPS Exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
@@ -456,11 +456,11 @@ void ComputePayRoll(){
     }
 }
 
-
 void DisplayPayrollHistoryForIndividual(){
     string ppsNo;
     cout << "Enter Employees PPS Number...\n";
     cin >> ppsNo;
+    ChangeToUpperCase(ppsNo);
     //Check if PPS Exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
