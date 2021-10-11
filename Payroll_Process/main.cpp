@@ -156,10 +156,17 @@ void EmployeeMaintenance() {
         case 4: //amend
         {
             ShowAllEmployees();
-            int employeeNo;
+            string employeeNo;
             cout << "Which record do you wish to amend? Enter Employee No...\n";
-            cin >> employeeNo;
-            ShowAmendMenu(employeeNo);
+            cin.ignore();
+            getline(cin, employeeNo);
+            //Check input is a valid selection
+            while (!isNumber(employeeNo) || IsInputEmpty(employeeNo) || stoi(employeeNo) > EmployeeVector.size()){
+                cout << "You must input a valid Employee number from above...\n";
+                getline(cin, employeeNo);
+            }
+            
+            ShowAmendMenu(stoi(employeeNo));
             EmployeeMaintenance();
         }
             break;
