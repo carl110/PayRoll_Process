@@ -549,7 +549,6 @@ void DisplayPayrollHistoryForIndividual(){
                         cout << "\n\n******************************************************\n";
                         cout << EmployeeVector[i].name << "\t";
                         cout << "PPS Number " << EmployeeVector[i].ppsNo << "\t\n\n";
-                    }
                     //Loop through and show all payslips associated
                     for (int n = 0; n < EmployeePaySlips.size(); n++)
                     {
@@ -563,6 +562,7 @@ void DisplayPayrollHistoryForIndividual(){
                             cout << "Cumulative Pay = " << EmployeePaySlips[n].cumulatvePay << "\n";
                             cout << "******************************************************\n";
                         }
+                    }
                     }
                 }
             }
