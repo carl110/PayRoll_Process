@@ -7,10 +7,7 @@
 
 #include <iostream>
 #include <vector>
-
 using namespace std;
-
-
 struct Employee {
     string employer;
     string ppsNo;
@@ -23,10 +20,9 @@ struct Employee {
 struct PaySlip {
     string ppsNo;
     double grossPay;
-    double prsi; //5
-    double paye; //25
-    
-    double usc; //5
+    double prsi; //5%
+    double paye; //25%
+    double usc; //5%
     int payPeriod;
     double cumulatvePay;
 };
@@ -45,6 +41,7 @@ void EmployeePayRoll();
 void ComputePayRoll();
 void DisplayPayrollHistoryForIndividual();
 void DisplayPayrollHistoryForAll();
+string ChangeToUpperCase(string userInput);
 
 vector<Employee> EmployeeVector;
 void HardcodeEmployees();
@@ -76,6 +73,29 @@ void HardcodePayslips(){
 string ChangeToUpperCase(string userInput){ //Change the input string to all uppercase
     std::transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper);
     return userInput;
+}
+
+bool IsInputEmpty(string userInput){//Check if user input is empty
+    //Remove all whitespaces first
+    userInput.erase(remove(userInput.begin(), userInput.end(), ' '), userInput.end());
+    if (userInput.length() == 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool isNumber( const string& s )
+{
+  bool hitDecimal=0;
+  for( char c : s )
+  {
+    if( c=='.' && !hitDecimal )
+      hitDecimal=1; // 1 decimal place is fine
+    else if( !isdigit( c ) )
+      return 0 ; // not a string
+  }
+  return 1 ;
 }
 
 void MainMenu(){
@@ -197,6 +217,7 @@ void AddNewEmployee(){
     string name;
     string jobTitle;
     string department;
+    string salaryString;
     double salary;
     
     //check if employee already exists
@@ -217,14 +238,39 @@ void AddNewEmployee(){
             cin.ignore(); //Allow input with whitespace using getline
             cout << "Enter Employer Name...\n";
             getline(cin, employer);
+            while (IsInputEmpty(employer)){
+                cout << "You cannot leave the Employer Name empty. Please enter Employer Name...\n";
+                getline(cin, employer);
+            }
             cout << "Enter Employee Name...\n";
             getline(cin, name);
+            while (IsInputEmpty(name)){
+                cout << "You cannot leave the Employees Name empty. Please enter Employees Name...\n";
+                getline(cin, name);
+            }
             cout << "Enter Job Title...\n";
             getline(cin, jobTitle);
+            while (IsInputEmpty(jobTitle)){
+                cout << "You cannot leave the Job Title empty. Please enter Job Title...\n";
+                getline(cin, jobTitle);
+            }
             cout << "Enter Department Name...\n";
             getline(cin, department);
+            while (IsInputEmpty(department)){
+                cout << "You cannot leave the Department Name empty. Please enter Department Name...\n";
+                getline(cin, department);
+            }
             cout << "Enter Salary (Numbers only)...\n";
-            cin >> salary;
+            getline(cin, salaryString);
+            
+            //Check input is a value and also not empty
+            while (!isNumber(salaryString) || IsInputEmpty(salaryString)) {
+                cout << "You must enter a value for salary in numbers only...\n";
+                getline(cin, salaryString);
+            }
+            
+            salary = stod(salaryString);
+
             //Add employee to vector
             EmployeeVector.push_back({employer, ppsNo, name, jobTitle, department, salary});
             cout << "Employee Added\n";
@@ -238,12 +284,13 @@ void AddNewEmployee(){
 void ShowAllEmployees(){
     cout << "\n*************All Employees*************\n\n";
     for (int i = 0; i < EmployeeVector.size(); i++){
-        cout << "Employer \t\t" << EmployeeVector[i].employer << "\n";
-        cout << "Employee No \t" << i+1 << "\n";
-        cout << "Name \t\t\t" << EmployeeVector[i].name << "\n";
-        cout << "Department \t\t" << EmployeeVector[i].department << "\n";
-        cout << "Job Title \t\t" << EmployeeVector[i].jobTitle << "\n";
-        cout << "PPS Number \t\t" << EmployeeVector[i].ppsNo << "\n";
+        cout << "Employer \t\t\t" << EmployeeVector[i].employer << "\n";
+        cout << "Employee No \t\t" << i+1 << "\n";
+        cout << "Name \t\t\t\t" << EmployeeVector[i].name << "\n";
+        cout << "Department \t\t\t" << EmployeeVector[i].department << "\n";
+        cout << "Job Title \t\t\t" << EmployeeVector[i].jobTitle << "\n";
+        cout << "PPS Number \t\t\t" << EmployeeVector[i].ppsNo << "\n";
+        cout << "Employee Salary \t\t" <<EmployeeVector[i].salary << "\n";
         cout << "******************************************************\n";
     }
     cout << "\n\n";
@@ -279,7 +326,8 @@ void AmendEmployee(int employeeNo){
     
     string employeeData;
     int userSelection = 0;
-    int salary = 0;
+    string salaryString;
+    double salary = 0;
     cin >> userSelection;
     
     switch (userSelection) {
@@ -287,6 +335,10 @@ void AmendEmployee(int employeeNo){
             cout << "Input the new Employer Name...\n";
             cin.ignore();
             getline(cin, employeeData);
+            while (IsInputEmpty(employeeData)){
+                cout << "You cannot leave the Employer Name empty. Please enter Employer Name...\n";
+                getline(cin, employeeData);
+            }
             EmployeeVector[employeeNo - 1].employer = employeeData;
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
@@ -294,6 +346,10 @@ void AmendEmployee(int employeeNo){
             cout << "Input the new Employee Name...\n";
             cin.ignore();
             getline(cin, employeeData);
+            while (IsInputEmpty(employeeData)){
+                cout << "You cannot leave the Employee Name empty. Please enter Employee Name...\n";
+                getline(cin, employeeData);
+            }
             EmployeeVector[employeeNo - 1].name = employeeData;
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
@@ -318,6 +374,10 @@ void AmendEmployee(int employeeNo){
             cout << "Input the new Job Title...\n";
             cin.ignore();
             getline(cin, employeeData);
+            while (IsInputEmpty(employeeData)){
+                cout << "You cannot leave the Job Title empty. Please enter Job Title...\n";
+                getline(cin, employeeData);
+            }
             EmployeeVector[employeeNo - 1].jobTitle = employeeData;
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
@@ -325,12 +385,22 @@ void AmendEmployee(int employeeNo){
             cout << "Input the new Department Name...\n";
             cin.ignore();
             getline(cin, employeeData);
+            while (IsInputEmpty(employeeData)){
+                cout << "You cannot leave the Department Name empty. Please enter Department Name...\n";
+                getline(cin, employeeData);
+            }
             EmployeeVector[employeeNo - 1].department = employeeData;
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
         case 6:
             cout << "Input the new Salary...\n";
-            cin >> salary;
+            cin >> salaryString;
+            //Check input is a value and also not empty
+            while (!isNumber(salaryString) || IsInputEmpty(salaryString)) {
+                cout << "You must enter a value for salary in numbers only...\n";
+                getline(cin, salaryString);
+            }
+            salary = stod(salaryString);
             EmployeeVector[employeeNo - 1].salary = salary;
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             break;
