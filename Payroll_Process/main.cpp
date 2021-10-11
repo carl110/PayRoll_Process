@@ -198,7 +198,9 @@ void RemoveEmployee(){
                 string name = EmployeeVector[i].name;
                 EmployeeVector.erase(EmployeeVector.begin()+(i));
                 i = sizeof(EmployeeVector);
-                cout << "Employee" << name << " with PPS '" << ppsNo << "' has been removed from the system \n";
+                cout << "\n\n*******************************************************************************************************\n";
+                cout << "Employee " << name << ", with PPS '" << ppsNo << "', has been removed from the system \n";
+                cout << "*******************************************************************************************************\n\n";
             }
         }
     } else {
@@ -280,7 +282,9 @@ void AddNewEmployee(){
 
             //Add employee to vector
             EmployeeVector.push_back({employer, ppsNo, name, jobTitle, department, salary});
-            cout << "Employee Added\n";
+            cout << "\n\n*******************************************************************************************************\n";
+            cout << "Employee " << name << ", with PPS '" << ppsNo << "', has been added to the system \n";
+            cout << "*******************************************************************************************************\n\n";
         }
     } else {
         cout << "This PPS Number is not valid, please try again...\n\n";
