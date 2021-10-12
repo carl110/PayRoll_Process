@@ -85,8 +85,7 @@ bool IsInputEmpty(string userInput){//Check if user input is empty
     }
 }
 
-bool isNumber( const string& s )
-{
+bool isNumber( const string& s ){
   bool hitDecimal=0;
   for( char c : s )
   {
@@ -190,7 +189,7 @@ void RemoveEmployee(){
     string ppsNo;
     cout << "Enter Employees PPS Number\n";
     cin >> ppsNo;
-    ChangeToUpperCase(ppsNo);
+    ppsNo = ChangeToUpperCase(ppsNo);
     //First check if PPS is exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
@@ -233,7 +232,7 @@ void AddNewEmployee(){
     cout << "\n\n\n\n\n\n";
     cout << "Enter PPS Number...\n";
     cin >> ppsNo;
-    ChangeToUpperCase(ppsNo);
+    ppsNo =  ChangeToUpperCase(ppsNo);
     //Check if PPS number is a valid PPS
     if (CheckPPSNumber(ppsNo)){
         if (CheckPPSExists(ppsNo)){
@@ -368,7 +367,7 @@ void AmendEmployee(int employeeNo){
             cout << "Input the new PPS Number...\n";
             cin.ignore();
             getline(cin, employeeData);
-            ChangeToUpperCase(employeeData);
+            employeeData = ChangeToUpperCase(employeeData);
             //Check PPS does not Exist in current vector and it is a valid PPS number format
             if (CheckPPSNumber(employeeData)){
                 if (!CheckPPSExists(employeeData)){
@@ -492,7 +491,7 @@ void ComputePayRoll(){
     
     cout << "Enter Employees PPS Number...\n";
     cin >> ppsNo;
-    ChangeToUpperCase(ppsNo);
+    ppsNo = ChangeToUpperCase(ppsNo);
     //Check if PPS Exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
@@ -541,7 +540,7 @@ void DisplayPayrollHistoryForIndividual(){
     string ppsNo;
     cout << "Enter Employees PPS Number...\n";
     cin >> ppsNo;
-    ChangeToUpperCase(ppsNo);
+    ppsNo = ChangeToUpperCase(ppsNo);
     //Check if PPS Exists
     if (CheckPPSExists(ppsNo)){
         for (int i = 0; i < EmployeeVector.size(); i++ ){
