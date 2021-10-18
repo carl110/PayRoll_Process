@@ -295,7 +295,7 @@ void ShowAllEmployees(){
     cout << "\n*************All Employees*************\n\n";
     for (int i = 0; i < EmployeeVector.size(); i++){
         cout << "Employer \t\t\t" << EmployeeVector[i].employer << "\n";
-        cout << "Employee No \t\t" << i+1 << "\n";
+        cout << "Employee No \t\t\t" << i+1 << "\n";
         cout << "Name \t\t\t\t" << EmployeeVector[i].name << "\n";
         cout << "Department \t\t\t" << EmployeeVector[i].department << "\n";
         cout << "Job Title \t\t\t" << EmployeeVector[i].jobTitle << "\n";
